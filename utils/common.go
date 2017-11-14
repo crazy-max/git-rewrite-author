@@ -1,13 +1,14 @@
 package utils
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
 	"regexp"
 )
 
-// CheckIfError should be used to natively panics if an error is not nil.
+// CheckIfError should be used to natively panics if an error is not nil
 func CheckIfError(err error) {
 	if err == nil {
 		return
@@ -21,13 +22,18 @@ func Error(format string, args ...interface{}) {
 	os.Exit(1)
 }
 
-// Info should be used to describe the example commands that are about to run.
+// Info should be used to describe the example commands that are about to run
 func Info(format string, args ...interface{}) {
 	fmt.Printf("\x1b[34;1m%s\x1b[0m\n", fmt.Sprintf(format, args...))
 }
 
 // Warning should be used to display a warning
 func Warning(format string, args ...interface{}) {
+	fmt.Printf("\x1b[33;1m%s\x1b[0m\n", fmt.Sprintf(format, args...))
+}
+
+// Debug to output additionnal information
+func Debug(format string, args ...interface{}) {
 	fmt.Printf("\x1b[36;1m%s\x1b[0m\n", fmt.Sprintf(format, args...))
 }
 
@@ -39,4 +45,10 @@ func ParseAddress(address string) (name string, email string, err error) {
 		return "", "", errors.New(fmt.Sprintf("Cannot parse %s", address))
 	}
 	return match[1], match[2], nil
+}
+
+// PrintPretty print of struct or slice
+func PrintPretty(v interface{}) {
+	b, _ := json.MarshalIndent(v, "", "  ")
+	fmt.Println(string(b))
 }

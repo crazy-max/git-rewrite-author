@@ -46,7 +46,9 @@ Then you can rewrite a single author / committer :
 ```
 $ git-rewrite-author rewrite "ohcrap@bad.com" "John Smith <john.smith@domain.com>" -d /tmp/repo.git
 
-Rewritting ohcrap@bad.com to 'John Smith <john.smith@domain.com>'...
+Following authors / committers will be rewritten :
+- ohcrap@bad.com => John Smith <john.smith@domain.com
+
 Rewrite 4b03c46d8f085f56014e5bee1e5597de86554139 (31/31) (22 seconds passed, remaining 0 predicted)
 Ref 'refs/heads/master' was rewritten
 Ref 'refs/remotes/origin/master' was rewritten
@@ -69,24 +71,10 @@ Or a list of authors / committers :
 ```
 $ git-rewrite-author rewrite-list ../authors.json -d /tmp/repo.git
 
-Rewritting root@localhost,noreply@github.com to 'John Smith <john.smith@domain.com>'...
-Rewrite 4b03c46d8f085f56014e5bee1e5597de86554139 (31/31) (22 seconds passed, remaining 0 predicted)
-Ref 'refs/heads/master' was rewritten
-Ref 'refs/remotes/origin/master' was rewritten
-Ref 'refs/tags/0.15.1-1' was rewritten
-Ref 'refs/tags/0.15.2-2' was rewritten
-Ref 'refs/tags/0.15.310-3' was rewritten
-Ref 'refs/tags/0.16.9-4' was rewritten
-Ref 'refs/tags/0.17.13-5' was rewritten
-Ref 'refs/tags/0.17.19-6' was rewritten
-Ref 'refs/tags/0.18.14-7' was rewritten
-Ref 'refs/tags/0.18.23-8' was rewritten
-Ref 'refs/tags/0.18.23-9' was rewritten
-Ref 'refs/tags/0.18.36-10' was rewritten
-Ref 'refs/tags/0.19.48-11' was rewritten
-Ref 'refs/tags/0.19.70-12' was rewritten
+Following authors / committers will be rewritten :
+- root@localhost, noreply@github.com => John Smith <john.smith@domain.com>
+- ohcrap@bad.com => Good Sir <goodsir@users.noreply.github.com>
 
-Rewritting ohcrap@bad.com to 'Good Sir <goodsir@users.noreply.github.com>'...
 Rewrite 4b03c46d8f085f56014e5bee1e5597de86554139 (31/31) (22 seconds passed, remaining 0 predicted)
 Ref 'refs/heads/master' was rewritten
 Ref 'refs/remotes/origin/master' was rewritten
@@ -108,14 +96,16 @@ Here the `authors.json` JSON file looks like this :
 
 ```json
 [
-  {
-    "old": [ "root@localhost", "noreply@github.com" ],
-    "correct": "John Smith <john.smith@domain.com>"
-  },
-  {
-    "old": [ "ohcrap@bad.com" ],
-    "correct": "Good Sir <goodsir@users.noreply.github.com>"
-  }
+	{
+		"old": [ "root@localhost", "noreply@github.com" ],
+		"correct_name": "John Smith",
+		"correct_mail": "john.smith@domain.com>"
+	},
+ 	{
+		"old": [ "ohcrap@bad.com" ],
+		"correct_name": "Good Sir",
+		"correct_mail": "goodsir@users.noreply.github.com"
+	}
 ]
 ```
 

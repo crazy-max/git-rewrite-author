@@ -1,10 +1,11 @@
 package cmd
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"io/ioutil"
-	"net/mail"
 	"strings"
 
 	"github.com/crazy-max/git-rewrite-author/git"
@@ -13,11 +14,10 @@ import (
 )
 
 type rewriteAuthor struct {
-	Old     []string `json:"old"`
-	Correct string   `json:"correct"`
+	Old         []string `json:"old"`
+	CorrectName string   `json:"correct_name"`
+	CorrectMail string   `json:"correct_mail"`
 }
-
-type rewriteAuthors []rewriteAuthor
 
 // rewriteCmd to rewrite authors / committers in Git history
 var rewriteCmd = &cobra.Command{
@@ -34,14 +34,16 @@ var rewriteListCmd = &cobra.Command{
 	Long: `Example of authors.json file :
 
 [
-  {
-    "old": [ "root@localhost", "noreply@github.com" ],
-    "correct": "John Smith <john.smith@domain.com>"
-  },
-  {
-    "old": [ "ohcrap@bad.com" ],
-    "correct": "Foo Bar <foobar@users.noreply.github.com>"
-  }
+	{
+		"old": [ "root@localhost", "noreply@github.com" ],
+		"correct_name": "John Smith",
+		"correct_mail": "john.smith@domain.com>"
+	},
+ 	{
+		"old": [ "ohcrap@bad.com" ],
+		"correct_name": "Good Sir",
+		"correct_mail": "goodsir@users.noreply.github.com"
+	}
 ]`,
 	Example: AppName + ` rewrite-list "~/authors.json"`,
 	Args:    cobra.ExactArgs(1),
@@ -53,11 +55,22 @@ func init() {
 }
 
 func rewriteCmdRun(cmd *cobra.Command, args []string) {
-	rewrite([]string{args[0]}, args[1])
+	var rewriteAuthors []*rewriteAuthor
+
+	correctName, correctMail, err := ParseAddress(args[1])
+	CheckIfError(err)
+
+	rewriteAuthors = append(rewriteAuthors, &rewriteAuthor{
+		Old:         []string{args[0]},
+		CorrectName: correctName,
+		CorrectMail: correctMail,
+	})
+
+	rewrite(rewriteAuthors)
 }
 
 func rewriteListCmdRun(cmd *cobra.Command, args []string) {
-	var rewriteAuthors []rewriteAuthor
+	var rewriteAuthors []*rewriteAuthor
 
 	authorsRaw, err := ioutil.ReadFile(args[0])
 	CheckIfError(err)
@@ -65,40 +78,54 @@ func rewriteListCmdRun(cmd *cobra.Command, args []string) {
 	err = json.Unmarshal(authorsRaw, &rewriteAuthors)
 	CheckIfError(err)
 
-	for _, rewriteAuthor := range rewriteAuthors {
-		rewrite(rewriteAuthor.Old, rewriteAuthor.Correct)
-	}
+	rewrite(rewriteAuthors)
 }
 
-func rewrite(olds []string, correct string) {
-	for _, old := range olds {
-		_, err := mail.ParseAddress(old)
-		CheckIfError(err)
+func rewrite(rewriteAuthors []*rewriteAuthor) {
+	if DebugEnabled {
+		prettyRewriteAuthors, _ := json.MarshalIndent(rewriteAuthors, "", "  ")
+		Debug("\n### Author(s) to rewrite:\n")
+		Debug(string(prettyRewriteAuthors))
 	}
 
-	correctName, correctMail, err := ParseAddress(correct)
+	t := template.New("rewrite")
+	t, _ = t.Parse(`{{range $i, $rewriteAuthor := .}}
+OLD_EMAILS_{{$i}}=({{range $j, $old := .Old}}{{if $j}} {{end}}"{{$old}}"{{end}})
+CORRECT_NAME_{{$i}}="{{.CorrectName}}"
+CORRECT_EMAIL_{{$i}}="{{.CorrectMail}}"
+for OLD_EMAIL_{{$i}} in ${OLD_EMAILS_{{$i}}[@]}; do
+	if [ "$GIT_COMMITTER_EMAIL" == "$OLD_EMAIL_{{$i}}" ]; then
+		export GIT_COMMITTER_NAME="$CORRECT_NAME_{{$i}}"
+		export GIT_COMMITTER_EMAIL="$CORRECT_EMAIL_{{$i}}"
+	fi
+	if [ "$GIT_AUTHOR_EMAIL" == "$OLD_EMAIL_{{$i}}" ]; then
+		export GIT_AUTHOR_NAME="$CORRECT_NAME_{{$i}}"
+		export GIT_AUTHOR_EMAIL="$CORRECT_EMAIL_{{$i}}"
+	fi
+done
+{{end}}`)
+
+	var tpl bytes.Buffer
+	err := t.Execute(&tpl, rewriteAuthors)
 	CheckIfError(err)
 
-	fmt.Printf("\nRewritting %s to '%s <%s>'...\n", strings.Join(olds, ", "), correctName, correctMail)
+	if DebugEnabled {
+		Debug("\n### Template used:\n%s", tpl.String())
+	}
+
+	fmt.Printf("\nFollowing authors / committers will be rewritten :")
+	for _, rewriteAuthor := range rewriteAuthors {
+		fmt.Printf("\n- %s => '%s <%s>'",
+			strings.Join(rewriteAuthor.Old, ", "),
+			rewriteAuthor.CorrectName,
+			rewriteAuthor.CorrectMail,
+		)
+	}
+	fmt.Printf("\n\n")
 
 	repo, err := git.Open(Dir)
 	CheckIfError(err)
 
-	err = repo.FilterBranch("--env-filter",
-		fmt.Sprintf(`OLD_EMAILS=(%s)
-CORRECT_NAME="%s"
-CORRECT_EMAIL="%s"
-for OLD_EMAIL in ${OLD_EMAILS[@]}; do
-	if [ "$GIT_COMMITTER_EMAIL" == "$OLD_EMAIL" ]; then
-		export GIT_COMMITTER_NAME="$CORRECT_NAME"
-		export GIT_COMMITTER_EMAIL="$CORRECT_EMAIL"
-	fi
-	if [ "$GIT_AUTHOR_EMAIL" == "$OLD_EMAIL" ]; then
-		export GIT_AUTHOR_NAME="$CORRECT_NAME"
-		export GIT_AUTHOR_EMAIL="$CORRECT_EMAIL"
-	fi
-done`, strings.Join(olds, " "), correctName, correctMail),
-		"--tag-name-filter", "cat", "-f", "--", "--all",
-	)
+	err = repo.FilterBranch("--env-filter", tpl.String(), "--tag-name-filter", "cat", "-f", "--", "--all")
 	CheckIfError(err)
 }

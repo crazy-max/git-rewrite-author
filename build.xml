@@ -53,7 +53,7 @@
       <ldflags add="-X '${app.package}/utils.AppDescription=${app.desc}'"/>
       <ldflags add="-X '${app.package}/utils.AppPackage=${app.package}'"/>
       <ldflags add="-X '${app.package}/utils.AppUrl=${app.url}'"/>
-      <ldflags add="-X '${app.package}/utils.AppVersion=${app.version}.${app.release}'"/>
+      <ldflags add="-X '${app.package}/utils.AppVersion=${app.version}'"/>
 
       <var name="xc.ext" unset="true"/>
       <if>
@@ -160,38 +160,6 @@
     <xc platform="linux" arch="amd64"/>
     <xc platform="linux" arch="arm"/>
     <xc platform="linux" arch="arm64"/>
-  </target>
-
-  <target name="build3">
-    <ldflags add="-X '${app.package}/utils.AppName=${app.name}'"/>
-    <ldflags add="-X '${app.package}/utils.AppDescription=${app.desc}'"/>
-    <ldflags add="-X '${app.package}/utils.AppPackage=${app.package}'"/>
-    <ldflags add="-X '${app.package}/utils.AppUrl=${app.url}'"/>
-    <ldflags add="-X '${app.package}/utils.AppVersion=${app.version}'"/>
-    <exec executable="goxc" failonerror="true" dir="${project.basedir}">
-      <!--arg value="-os"/>
-      <arg value="windows"/>
-      <arg value="-arch"/>
-      <arg value="386"/-->
-      <arg value="-ldflags"/>
-      <arg value="${ldflags}"/>
-      <arg value="-output"/>
-      <arg value="${build.path}/{{.Dir}}_{{.OS}}_{{.Arch}}"/>
-    </exec>
-  </target>
-
-  <target name="build2">
-    <ldflags add="-X '${app.package}/utils.AppName=${app.name}'"/>
-    <ldflags add="-X '${app.package}/utils.AppDescription=${app.desc}'"/>
-    <ldflags add="-X '${app.package}/utils.AppPackage=${app.package}'"/>
-    <ldflags add="-X '${app.package}/utils.AppUrl=${app.url}'"/>
-    <ldflags add="-X '${app.package}/utils.AppVersion=${app.version}.${app.release}'"/>
-    <exec executable="goxc" failonerror="true" dir="${project.basedir}">
-      <arg value="-d"/>
-      <arg value="${build.path}"/>
-      <arg value="-build-ldflags"/>
-      <arg value="${ldflags}"/>
-    </exec>
   </target>
 
 </project>

@@ -16,6 +16,7 @@ More info on ` + AppUrl,
 }
 
 var Dir string
+var DebugEnabled bool
 
 // Execute adds all child commands to the root command and sets flags appropriately.
 func Execute() {
@@ -27,4 +28,5 @@ func Execute() {
 
 func init() {
 	RootCmd.PersistentFlags().StringVarP(&Dir, "directory", "d", ".", "Git repository path")
+	RootCmd.PersistentFlags().BoolVarP(&DebugEnabled, "debug", "x", false, "Debug")
 }

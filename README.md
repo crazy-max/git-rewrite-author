@@ -99,7 +99,7 @@ Here the `authors.json` JSON file looks like this :
 	{
 		"old": [ "root@localhost", "noreply@github.com" ],
 		"correct_name": "John Smith",
-		"correct_mail": "john.smith@domain.com>"
+		"correct_mail": "john.smith@domain.com"
 	},
  	{
 		"old": [ "ohcrap@bad.com" ],
@@ -120,7 +120,7 @@ John Smith <john.smith@domain.com>
 Review the new Git history for errors and push the corrected history to Git :
 
 ```
-git push --force --all origin 'refs/heads/*'
+git push --force --all
 ```
 
 ## How can i help ?

@@ -37,7 +37,7 @@ var rewriteListCmd = &cobra.Command{
 	{
 		"old": [ "root@localhost", "noreply@github.com" ],
 		"correct_name": "John Smith",
-		"correct_mail": "john.smith@domain.com>"
+		"correct_mail": "john.smith@domain.com"
 	},
  	{
 		"old": [ "ohcrap@bad.com" ],

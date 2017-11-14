@@ -1,4 +1,4 @@
-<p align="center"><a href="https://github.com/crazy-max/git-rewrite-author" target="_blank"><img width="100"src="https://raw.githubusercontent.com/crazy-max/git-rewrite-author/res/git-rewrite-author.png"></a></p>
+<p align="center"><a href="https://github.com/crazy-max/git-rewrite-author" target="_blank"><img width="100"src="https://raw.githubusercontent.com/crazy-max/git-rewrite-author/master/res/git-rewrite-author.png"></a></p>
 
 <p align="center">
   <a href="https://github.com/crazy-max/git-rewrite-author/releases/latest"><img src="https://img.shields.io/github/release/crazy-max/git-rewrite-author.svg?style=flat-square" alt="GitHub release"></a>

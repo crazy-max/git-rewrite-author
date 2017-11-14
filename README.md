@@ -120,7 +120,7 @@ John Smith <john.smith@domain.com>
 Review the new Git history for errors and push the corrected history to Git :
 
 ```
-git push --force
+git push --force --all origin 'refs/heads/*'
 ```
 
 ## How can i help ?

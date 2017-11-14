@@ -1,0 +1,8 @@
+# Intellij
+/.idea
+/*.iml
+
+# App
+/.dev
+/bin
+/vendor

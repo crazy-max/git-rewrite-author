@@ -13,7 +13,7 @@
 
 **git-rewrite-author** is a CLI application written in [Go](https://golang.org/) to rewrite one or several authors / committers history of a [Git](https://git-scm.com/) repository with ease. It was inspired by [this post on Github](https://help.github.com/articles/changing-author-info/).
 
-![](res/screenshot-20171113.png)
+![](res/screenshot-20171114.png)
 > Screenshot of git-rewrite-author
 
 ## Requirements

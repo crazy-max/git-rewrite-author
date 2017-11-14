@@ -1,0 +1,8 @@
+[metadata]
+package = "github.com/crazy-max/git-rewrite-author"
+homepage = "https://github.com/crazy-max/git-rewrite-author"
+license = "MIT"
+
+[[constraint]]
+  name = "github.com/spf13/cobra"
+  version = "0.0.1"

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="git-rewrite-author" basedir=".">
+
+  <dirname property="project.basedir" file="${ant.file.git-rewrite-author}"/>
+  <property name="build.properties" value="${project.basedir}/build.properties"/>
+  <property file="${build.properties}"/>
+
+  <!-- Properties -->
+  <property environment="env"/>
+  <property name="bin.path" value="${project.basedir}/bin"/>
+  <property name="build.path" value="${bin.path}/build"/>
+  <property name="release.path" value="${bin.path}/release"/>
+  <property name="lib.path" value="${bin.path}/lib"/>
+  <property name="tmp.path" value="${bin.path}/tmp"/>
+  <property name="ldflags" value="-s -w"/>
+
+  <!-- Build number -->
+  <condition property="app.release" value="${env.TRAVIS_BUILD_NUMBER}"><isset property="env.TRAVIS_BUILD_NUMBER"/></condition>
+  <condition property="app.release" value="${app.default.release}"><not><isset property="env.TRAVIS_BUILD_NUMBER"/></not></condition>
+
+  <!-- Macros -->
+  <macrodef name="assertdir">
+    <attribute name="dir"/>
+    <sequential>
+      <fail message="Directory '@{dir}' does not exist">
+        <condition><not><available file="@{dir}" type="dir"/></not></condition>
+      </fail>
+    </sequential>
+  </macrodef>
+
+  <macrodef name="assertfile">
+    <attribute name="file"/>
+    <sequential>
+      <fail message="File '@{file}' does not exist">
+        <condition><not><available file="@{file}" type="file"/></not></condition>
+      </fail>
+    </sequential>
+  </macrodef>
+
+  <macrodef name="ldflags">
+    <attribute name="add"/>
+    <sequential>
+      <var name="ldflags" value="${ldflags} @{add}" />
+    </sequential>
+  </macrodef>
+
+  <macrodef name="xc">
+    <attribute name="platform"/>
+    <attribute name="arch"/>
+    <sequential>
+      <var name="ldflags" value="-s -w"/>
+      <ldflags add="-X '${app.package}/utils.AppName=${app.name}'"/>
+      <ldflags add="-X '${app.package}/utils.AppDescription=${app.desc}'"/>
+      <ldflags add="-X '${app.package}/utils.AppPackage=${app.package}'"/>
+      <ldflags add="-X '${app.package}/utils.AppUrl=${app.url}'"/>
+      <ldflags add="-X '${app.package}/utils.AppVersion=${app.version}.${app.release}'"/>
+
+      <var name="xc.ext" unset="true"/>
+      <if>
+        <equals arg1="@{platform}" arg2="windows"/>
+        <then><property name="xc.ext" value=".exe"/></then>
+        <else><property name="xc.ext" value=""/></else>
+      </if>
+
+      <echo message="${line.separator}## Building for @{platform} @{arch}"/>
+      <exec executable="go" failonerror="true" dir="${project.basedir}">
+        <env key="GOOS" value="@{platform}"/>
+        <env key="GOARCH" value="@{arch}"/>
+        <arg value="build"/>
+        <arg value="-ldflags"/>
+        <arg value="${ldflags}"/>
+        <arg value="-o"/>
+        <arg value="${build.path}/@{platform}/@{arch}/${app.name}${xc.ext}"/>
+        <arg value="-v"/>
+      </exec>
+
+      <copy todir="${build.path}/@{platform}/@{arch}/">
+        <fileset dir="${project.basedir}">
+          <include name="CHANGELOG.md"/>
+          <include name="LICENSE"/>
+          <include name="README.md"/>
+        </fileset>
+      </copy>
+
+      <if>
+        <equals arg1="@{platform}" arg2="windows"/>
+        <then>
+          <zip destfile="${release.path}/${app.name}_@{platform}_@{arch}.zip">
+            <fileset dir="${build.path}/@{platform}/@{arch}"/>
+          </zip>
+        </then>
+        <else>
+          <tar destfile="${release.path}/${app.name}_@{platform}_@{arch}.tar">
+            <fileset dir="${build.path}/@{platform}/@{arch}"/>
+          </tar>
+          <gzip destfile="${release.path}/${app.name}_@{platform}_@{arch}.tar.gz"
+            src="${release.path}/${app.name}_@{platform}_@{arch}.tar"
+          />
+          <delete file="${release.path}/${app.name}_@{platform}_@{arch}.tar"/>
+        </else>
+      </if>
+    </sequential>
+  </macrodef>
+
+  <!-- Targets -->
+  <target name="release" depends="init, load.lib, dep, build" description="Release">
+    <echo message="Writing version.dat..."/>
+    <echo file="${tmp.path}/version.dat" append="false">${app.version}</echo>
+  </target>
+
+  <target name="init" unless="is.lib.loaded">
+    <mkdir dir="${bin.path}"/>
+    <mkdir dir="${lib.path}"/>
+    <delete dir="${build.path}"/>
+    <mkdir dir="${build.path}"/>
+    <delete dir="${release.path}"/>
+    <mkdir dir="${release.path}"/>
+    <delete dir="${tmp.path}"/>
+    <mkdir dir="${tmp.path}"/>
+  </target>
+
+  <target name="load.lib" unless="is.lib.loaded" depends="load.lib.antcontrib, load.lib.dep">
+    <var name="is.lib.loaded" value="true"/>
+  </target>
+
+  <target name="load.lib.antcontrib" unless="is.lib.loaded">
+    <echo message="Load ANT Contrib"/>
+    <mkdir dir="${lib.path}/ant-contrib"/>
+    <get dest="${lib.path}/ant-contrib/ant-contrib.jar" src="${antcontrib.url}" skipexisting="true"/>
+    <taskdef resource="net/sf/antcontrib/antlib.xml">
+      <classpath>
+        <fileset dir="${lib.path}/ant-contrib">
+          <include name="**/*.jar"/>
+        </fileset>
+      </classpath>
+    </taskdef>
+  </target>
+
+  <target name="load.lib.dep" unless="is.lib.loaded">
+    <exec executable="go" failonerror="true" dir="${project.basedir}">
+      <arg value="get"/>
+      <arg value="-v"/>
+      <arg value="${dep.package}"/>
+    </exec>
+  </target>
+
+  <target name="dep" description="Install vendor">
+    <exec executable="dep" failonerror="true" dir="${project.basedir}">
+      <arg value="ensure"/>
+      <arg value="-v"/>
+    </exec>
+  </target>
+
+  <target name="build">
+    <xc platform="windows" arch="386"/>
+    <xc platform="windows" arch="amd64"/>
+    <xc platform="darwin" arch="386"/>
+    <xc platform="darwin" arch="amd64"/>
+    <xc platform="linux" arch="386"/>
+    <xc platform="linux" arch="amd64"/>
+    <xc platform="linux" arch="arm"/>
+    <xc platform="linux" arch="arm64"/>
+  </target>
+
+  <target name="build3">
+    <ldflags add="-X '${app.package}/utils.AppName=${app.name}'"/>
+    <ldflags add="-X '${app.package}/utils.AppDescription=${app.desc}'"/>
+    <ldflags add="-X '${app.package}/utils.AppPackage=${app.package}'"/>
+    <ldflags add="-X '${app.package}/utils.AppUrl=${app.url}'"/>
+    <ldflags add="-X '${app.package}/utils.AppVersion=${app.version}'"/>
+    <exec executable="goxc" failonerror="true" dir="${project.basedir}">
+      <!--arg value="-os"/>
+      <arg value="windows"/>
+      <arg value="-arch"/>
+      <arg value="386"/-->
+      <arg value="-ldflags"/>
+      <arg value="${ldflags}"/>
+      <arg value="-output"/>
+      <arg value="${build.path}/{{.Dir}}_{{.OS}}_{{.Arch}}"/>
+    </exec>
+  </target>
+
+  <target name="build2">
+    <ldflags add="-X '${app.package}/utils.AppName=${app.name}'"/>
+    <ldflags add="-X '${app.package}/utils.AppDescription=${app.desc}'"/>
+    <ldflags add="-X '${app.package}/utils.AppPackage=${app.package}'"/>
+    <ldflags add="-X '${app.package}/utils.AppUrl=${app.url}'"/>
+    <ldflags add="-X '${app.package}/utils.AppVersion=${app.version}.${app.release}'"/>
+    <exec executable="goxc" failonerror="true" dir="${project.basedir}">
+      <arg value="-d"/>
+      <arg value="${build.path}"/>
+      <arg value="-build-ldflags"/>
+      <arg value="${ldflags}"/>
+    </exec>
+  </target>
+
+</project>

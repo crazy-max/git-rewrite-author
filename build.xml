@@ -15,8 +15,8 @@
   <property name="ldflags" value="-s -w"/>
 
   <!-- Build number -->
-  <condition property="app.release" value="${env.TRAVIS_BUILD_NUMBER}"><isset property="env.TRAVIS_BUILD_NUMBER"/></condition>
-  <condition property="app.release" value="${app.default.release}"><not><isset property="env.TRAVIS_BUILD_NUMBER"/></not></condition>
+  <condition property="app.release" value="${env.APPVEYOR_BUILD_NUMBER}"><isset property="env.APPVEYOR_BUILD_NUMBER"/></condition>
+  <condition property="app.release" value="${app.default.release}"><not><isset property="env.APPVEYOR_BUILD_NUMBER"/></not></condition>
 
   <!-- Macros -->
   <macrodef name="assertdir">

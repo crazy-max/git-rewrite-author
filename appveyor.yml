@@ -6,7 +6,7 @@ environment:
   JAVA_HOME: C:\Program Files (x86)\Java\jdk1.8.0
   GOPATH: C:\gopath
   GOROOT: C:\go\
-  GOVERSION: 1.9.1
+  GOVERSION: 1.9
 
 install:
   - ps: choco install ant
@@ -44,3 +44,9 @@ deploy:
   prerelease: false
   on:
     branch: master
+
+notifications:
+  - provider: Webhook
+    url:
+      secure: Vf+59lgCDVyte9kmHKwYXPR7uc6THo9IH6mQwiPAWOCQHUoLCQrGFupj30nk4MUggyWss3ydobo/z1sQ6iYabwAkkwI6H9XNmjgGgTVlCJoBISHN6yTwxLgkYMi40qT4Mevr9XVgd6EmJqOi257YjQ==
+    method: post

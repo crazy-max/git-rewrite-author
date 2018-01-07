@@ -26,6 +26,19 @@ $ git clone --bare https://github.com/user/repo.git
 $ cd /tmp/repo.git
 ```
 
+## Download
+
+| File name                                                                                                                                                    | OS      | Arch    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- | ------- |
+| **[git-rewrite-author_darwin_amd64.tar.gz](https://github.com/crazy-max/git-rewrite-author/releases/download/1.1.1/git-rewrite-author_darwin_amd64.tar.gz)** | macOS   | x86-64  |
+| [git-rewrite-author_darwin_386.tar.gz](https://github.com/crazy-max/git-rewrite-author/releases/download/1.1.1/git-rewrite-author_darwin_386.tar.gz)         | macOS   | x86     |
+| **[git-rewrite-author_linux_amd64.tar.gz](https://github.com/crazy-max/git-rewrite-author/releases/download/1.1.1/git-rewrite-author_linux_amd64.tar.gz)**   | Linux   | x86-64  |
+| [git-rewrite-author_linux_386.tar.gz](https://github.com/crazy-max/git-rewrite-author/releases/download/1.1.1/git-rewrite-author_linux_386.tar.gz)           | Linux   | x86     |
+| **[git-rewrite-author_linux_arm64.tar.gz](https://github.com/crazy-max/git-rewrite-author/releases/download/1.1.1/git-rewrite-author_linux_arm64.tar.gz)**   | Linux   | ARM64   |
+| [git-rewrite-author_linux_arm.tar.gz](https://github.com/crazy-max/git-rewrite-author/releases/download/1.1.1/git-rewrite-author_linux_arm.tar.gz)           | Linux   | ARM     |
+| **[git-rewrite-author_windows_amd64.zip](https://github.com/crazy-max/git-rewrite-author/releases/download/1.1.1/git-rewrite-author_windows_amd64.zip)**     | Windows | x86-64  |
+| [git-rewrite-author_windows_386.zip](https://github.com/crazy-max/git-rewrite-author/releases/download/1.1.1/git-rewrite-author_windows_386.zip)             | Windows | x86     |
+
 ## Installation
 
 Place the executable in your Git repository. It is best to place it in your `PATH` so that you can use it anywhere in your system and also use it with the Git syntax `git rewrite-author`.

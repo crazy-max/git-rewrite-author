@@ -103,7 +103,7 @@
   </macrodef>
 
   <!-- Targets -->
-  <target name="release" depends="init, load.lib, build" description="Release">
+  <target name="release" depends="init, load.lib, downmod, build" description="Release">
     <echo message="Writing version.dat..."/>
     <echo file="${tmp.path}/version.dat" append="false">${app.version}</echo>
   </target>
@@ -134,6 +134,13 @@
         </fileset>
       </classpath>
     </taskdef>
+  </target>
+
+  <target name="downmod" description="Download modules">
+    <exec executable="go" failonerror="true" dir="${project.basedir}">
+      <arg value="mod"/>
+      <arg value="download"/>
+    </exec>
   </target>
 
   <target name="build">

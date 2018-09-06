@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.1 (2018/09/06)
+
+* Upgrade to Go 1.11
+* Use [go mod](https://golang.org/cmd/go/#hdr-Module_maintenance) instead of `dep`
+
 ## 1.1.1 (2017/11/14)
 
 * Typo in rewrite example

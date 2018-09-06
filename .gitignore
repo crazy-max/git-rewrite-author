@@ -5,4 +5,4 @@
 # App
 /.dev
 /bin
-/vendor
+go.sum

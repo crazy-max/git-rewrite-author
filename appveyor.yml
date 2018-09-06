@@ -1,7 +1,5 @@
 version: '{build}'
 
-clone_folder: C:\gopath\src\github.com\crazy-max\git-rewrite-author
-
 environment:
   JAVA_HOME: C:\Program Files (x86)\Java\jdk1.8.0
   GOPATH: C:\gopath

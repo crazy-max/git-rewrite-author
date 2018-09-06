@@ -23,7 +23,7 @@ build_script:
 
 after_build:
   - ps: |
-      $env:APP_VERSION = Get-Content C:\gopath\src\github.com\crazy-max\git-rewrite-author\bin\tmp\version.dat -Raw
+      $env:APP_VERSION = Get-Content "$env:APPVEYOR_BUILD_FOLDER\bin\tmp\version.dat" -Raw
       Write-Host "App version: $env:APP_VERSION"
 
 artifacts:

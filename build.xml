@@ -104,7 +104,7 @@
 
   <!-- Targets -->
   <target name="release" depends="init, load.lib, downmod, build" description="Release">
-    <echo message="Writing version.dat..."/>
+    <echo message="Writing ${tmp.path}/version.dat..."/>
     <echo file="${tmp.path}/version.dat" append="false">${app.version}</echo>
   </target>
 

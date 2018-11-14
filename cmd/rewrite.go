@@ -94,13 +94,13 @@ OLD_EMAILS_{{$i}}=({{range $j, $old := .Old}}{{if $j}} {{end}}"{{$old}}"{{end}})
 CORRECT_NAME_{{$i}}="{{.CorrectName}}"
 CORRECT_EMAIL_{{$i}}="{{.CorrectMail}}"
 for OLD_EMAIL_{{$i}} in ${OLD_EMAILS_{{$i}}[@]}; do
-	if [ "$GIT_COMMITTER_EMAIL" == "$OLD_EMAIL_{{$i}}" ]; then
-		export GIT_COMMITTER_NAME="$CORRECT_NAME_{{$i}}"
-		export GIT_COMMITTER_EMAIL="$CORRECT_EMAIL_{{$i}}"
+	if [ "$GIT_COMMITTER_EMAIL" = "$OLD_EMAIL_{{$i}}" ]; then
+		GIT_COMMITTER_NAME="$CORRECT_NAME_{{$i}}"
+		GIT_COMMITTER_EMAIL="$CORRECT_EMAIL_{{$i}}"
 	fi
-	if [ "$GIT_AUTHOR_EMAIL" == "$OLD_EMAIL_{{$i}}" ]; then
-		export GIT_AUTHOR_NAME="$CORRECT_NAME_{{$i}}"
-		export GIT_AUTHOR_EMAIL="$CORRECT_EMAIL_{{$i}}"
+	if [ "$GIT_AUTHOR_EMAIL" = "$OLD_EMAIL_{{$i}}" ]; then
+		GIT_AUTHOR_NAME="$CORRECT_NAME_{{$i}}"
+		GIT_AUTHOR_EMAIL="$CORRECT_EMAIL_{{$i}}"
 	fi
 done
 {{end}}`)
@@ -126,6 +126,6 @@ done
 	repo, err := git.Open(Dir)
 	CheckIfError(err)
 
-	err = repo.FilterBranch("--env-filter", tpl.String(), "--tag-name-filter", "cat", "-f", "--", "--all")
+	err = repo.FilterBranch("--env-filter", tpl.String(), "--", "--all")
 	CheckIfError(err)
 }

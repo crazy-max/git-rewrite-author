@@ -126,6 +126,6 @@ done
 	repo, err := git.Open(Dir)
 	CheckIfError(err)
 
-	err = repo.FilterBranch("--env-filter", tpl.String(), "--", "--all")
+	err = repo.FilterBranch("--env-filter", tpl.String(), "--tag-name-filter", "cat", "--", "--all")
 	CheckIfError(err)
 }

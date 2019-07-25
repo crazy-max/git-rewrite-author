@@ -6,6 +6,7 @@
   <a href="https://ci.appveyor.com/project/crazy-max/git-rewrite-author"><img src="https://img.shields.io/appveyor/ci/crazy-max/git-rewrite-author.svg?style=flat-square" alt="AppVeyor"></a>
   <a href="https://goreportcard.com/report/github.com/crazy-max/git-rewrite-author"><img src="https://goreportcard.com/badge/github.com/crazy-max/git-rewrite-author?style=flat-square" alt="Go Report"></a>
   <a href="https://www.codacy.com/app/crazy-max/git-rewrite-author"><img src="https://img.shields.io/codacy/grade/356b78c4f48e4e2e9d286dd79be84d3f.svg?style=flat-square" alt="Code Quality"></a>
+  <br /><a href="https://www.patreon.com/crazymax"><img src="https://img.shields.io/badge/donate-patreon-fb664e.svg?style=flat-square" alt="Support me on Patreon"></a>
   <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WEWXNDUNNE9HU"><img src="https://img.shields.io/badge/donate-paypal-7057ff.svg?style=flat-square" alt="Donate Paypal"></a>
 </p>
 
@@ -142,6 +143,7 @@ All kinds of contributions are welcomed :raised_hands:!<br />
 The most basic way to show your support is to star :star2: the project, or to raise issues :speech_balloon:<br />
 But we're not gonna lie to each other, I'd rather you buy me a beer or two :beers:!
 
+[![Support me on Patreon](.res/patreon.png)](https://www.patreon.com/crazymax) 
 [![Paypal](.res/paypal-donate.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WEWXNDUNNE9HU)
 
 ## License

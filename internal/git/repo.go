@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	. "github.com/crazy-max/git-rewrite-author/utils"
+	"github.com/rs/zerolog/log"
 )
 
 // ConfigMap maps config keys to their values.
@@ -27,18 +27,18 @@ var gitCmd string
 func init() {
 	var err error
 	if gitCmd, err = exec.LookPath("git"); err != nil {
-		Error("Cannot find git command!")
+		log.Fatal().Err(err).Msg("Cannot find git command")
 	}
 }
 
-func findRepo(path string) (found bool, gitdir, workdir string) {
+func findRepo(path string) (found bool, gitdir, workdir string, err error) {
 	stat, err := os.Stat(path)
 	if err != nil {
-		Error("Could not stat " + path)
+		return
 	}
-
 	if !stat.IsDir() {
-		Error(path + " is not a directory!")
+		err = errors.New(path + " is not a directory")
+		return
 	}
 
 	if strings.HasSuffix(path, ".git") {
@@ -51,7 +51,6 @@ func findRepo(path string) (found bool, gitdir, workdir string) {
 	}
 
 	if stat, err = os.Stat(filepath.Join(path, ".git", "config")); err != nil {
-		found = false
 		return
 	}
 
@@ -74,7 +73,7 @@ func Open(path string) (repo *Repo, err error) {
 	}
 
 	for {
-		found, gitdir, workdir := findRepo(path)
+		found, gitdir, workdir, _ := findRepo(path)
 		if found {
 			repo = new(Repo)
 			repo.GitDir = gitdir

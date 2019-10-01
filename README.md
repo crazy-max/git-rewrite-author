@@ -3,7 +3,7 @@
 <p align="center">
   <a href="https://github.com/crazy-max/git-rewrite-author/releases/latest"><img src="https://img.shields.io/github/release/crazy-max/git-rewrite-author.svg?style=flat-square" alt="GitHub release"></a>
   <a href="https://github.com/crazy-max/git-rewrite-author/releases/latest"><img src="https://img.shields.io/github/downloads/crazy-max/git-rewrite-author/total.svg?style=flat-square" alt="Total downloads"></a>
-  <a href="https://github.com/crazy-max/travis-wait-enhanced/actions"><img src="https://github.com/crazy-max/travis-wait-enhanced/workflows/build/badge.svg" alt="Build Status"></a>
+  <a href="https://github.com/crazy-max/git-rewrite-author/actions"><img src="https://github.com/crazy-max/git-rewrite-author/workflows/build/badge.svg" alt="Build Status"></a>
   <a href="https://goreportcard.com/report/github.com/crazy-max/git-rewrite-author"><img src="https://goreportcard.com/badge/github.com/crazy-max/git-rewrite-author?style=flat-square" alt="Go Report"></a>
   <a href="https://www.codacy.com/app/crazy-max/git-rewrite-author"><img src="https://img.shields.io/codacy/grade/356b78c4f48e4e2e9d286dd79be84d3f.svg?style=flat-square" alt="Code Quality"></a>
   <br /><a href="https://www.patreon.com/crazymax"><img src="https://img.shields.io/badge/donate-patreon-f96854.svg?logo=patreon&style=flat-square" alt="Support me on Patreon"></a>

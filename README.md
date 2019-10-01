@@ -121,16 +121,16 @@ Here the `authors.json` JSON file looks like this :
 
 ```json
 [
-	{
-		"old": [ "root@localhost", "noreply@github.com" ],
-		"correct_name": "John Smith",
-		"correct_mail": "john.smith@domain.com"
-	},
- 	{
-		"old": [ "ohcrap@bad.com" ],
-		"correct_name": "Good Sir",
-		"correct_mail": "goodsir@users.noreply.github.com"
-	}
+    {
+        "old": [ "root@localhost", "noreply@github.com" ],
+        "correct_name": "John Smith",
+        "correct_mail": "john.smith@domain.com"
+    },
+    {
+        "old": [ "ohcrap@bad.com" ],
+        "correct_name": "Good Sir",
+        "correct_mail": "goodsir@users.noreply.github.com"
+    }
 ]
 ```
 
@@ -155,7 +155,7 @@ The most basic way to show your support is to star :star2: the project, or to ra
 But we're not gonna lie to each other, I'd rather you buy me a beer or two :beers:!
 
 [![Support me on Patreon](.res/patreon.png)](https://www.patreon.com/crazymax) 
-[![Paypal](.res/paypal.png)](https://www.paypal.me/crazyws)
+[![Paypal Donate](.res/paypal.png)](https://www.paypal.me/crazyws)
 
 ## License
 

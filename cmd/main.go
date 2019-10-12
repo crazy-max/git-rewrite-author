@@ -38,7 +38,7 @@ func main() {
 
 	rewrite := cmd.Command("rewrite", "Rewrite an author/committer in Git history.")
 	rewrite.Arg("old", "Current email linked to Git author to rewrite").Required().StringVar(&flags.Old)
-	rewrite.Arg("correct", `New Git name and email to set`).Required().StringVar(&flags.Correct)
+	rewrite.Arg("correct", "New Git name and email to set").Required().StringVar(&flags.Correct)
 
 	rewriteList := cmd.Command("rewrite-list", "Rewrite a list of authors/committers in Git history.")
 	rewriteList.Arg("file", "Authors JSON file").Required().StringVar(&flags.AuthorsJSON)

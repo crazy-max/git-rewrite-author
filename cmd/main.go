@@ -22,7 +22,7 @@ var (
 func main() {
 	var err error
 
-	cmd := kingpin.New("git-rewrite-author", "Rewrite authors history of a Git repository with ease.\nMoreinfo: https://github.com/crazy-max/git-rewrite-author")
+	cmd := kingpin.New("git-rewrite-author", "Rewrite authors history of a Git repository with ease. Moreinfo: https://github.com/crazy-max/git-rewrite-author")
 	cmd.Flag("repo", "Git repository path.").Default(".").StringVar(&flags.Repo)
 	cmd.Flag("log-level", "Set log level.").Default(zerolog.InfoLevel.String()).StringVar(&flags.LogLevel)
 	cmd.Flag("log-caller", "Enable to add file:line of the caller.").Default("false").BoolVar(&flags.LogCaller)

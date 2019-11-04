@@ -3,9 +3,23 @@ name: build
 on:
   pull_request:
     branches: 'master'
+    paths:
+      - '.github/workflows/build.yml'
+      - 'cmd/**'
+      - 'internal/**'
+      - '.goreleaser.yml'
+      - 'go.mod'
+      - 'go.sum'
   push:
     branches: 'master'
     tags: '*.*.*'
+    paths:
+      - '.github/workflows/build.yml'
+      - 'cmd/**'
+      - 'internal/**'
+      - '.goreleaser.yml'
+      - 'go.mod'
+      - 'go.sum'
 
 jobs:
   release:

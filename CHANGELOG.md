@@ -6,6 +6,7 @@
 * Fix filter branch command (#1)
 * Switch to kong command-line parser
 * Go 1.13
+* Update deps
 
 ## 1.2.0 (2019/10/01)
 

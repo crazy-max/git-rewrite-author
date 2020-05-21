@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.3.0 (2020/05/21)
+
+* Avoid git filter-branch delay
+* Fix filter branch command (#1)
+* Switch to kong command-line parser
+* Go 1.13
+
 ## 1.2.0 (2019/10/01)
 
 * Switch to GitHub Actions

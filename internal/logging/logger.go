@@ -10,7 +10,7 @@ import (
 )
 
 // Configure configures logger
-func Configure(fl model.Flags) {
+func Configure(cli model.Cli) {
 	var err error
 
 	ctx := zerolog.New(zerolog.ConsoleWriter{
@@ -18,13 +18,13 @@ func Configure(fl model.Flags) {
 		TimeFormat: time.RFC1123,
 	}).With().Timestamp()
 
-	if fl.LogCaller {
+	if cli.LogCaller {
 		ctx = ctx.Caller()
 	}
 
 	log.Logger = ctx.Logger()
 
-	logLevel, err := zerolog.ParseLevel(fl.LogLevel)
+	logLevel, err := zerolog.ParseLevel(cli.LogLevel)
 	if err != nil {
 		log.Fatal().Err(err).Msgf("Unknown log level")
 	} else {

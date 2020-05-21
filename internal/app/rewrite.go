@@ -18,14 +18,14 @@ type rewriteAuthor struct {
 
 // Rewrite rewrites an author/committer in Git history
 func (gra *GitRewriteAuthor) RewriteOne() {
-	correctName, correctMail, err := utl.ParseAddress(gra.fl.Correct)
+	correctName, correctMail, err := utl.ParseAddress(gra.cli.Rewrite.Correct)
 	if err != nil {
 		log.Fatal().Err(err).Msg("Cannot parse new Git name and email")
 	}
 
 	gra.rewrite([]*rewriteAuthor{
 		{
-			Old:         []string{gra.fl.Old},
+			Old:         []string{gra.cli.Rewrite.Old},
 			CorrectName: correctName,
 			CorrectMail: correctMail,
 		},
@@ -34,7 +34,7 @@ func (gra *GitRewriteAuthor) RewriteOne() {
 
 // RewriteList rewrites a list of authors/committers in Git history
 func (gra *GitRewriteAuthor) RewriteList() {
-	authorsFile, err := ioutil.ReadFile(gra.fl.AuthorsJSON)
+	authorsFile, err := ioutil.ReadFile(gra.cli.RewriteList.File)
 	if err != nil {
 		log.Fatal().Err(err).Msg("Cannot read authors JSON file")
 	}

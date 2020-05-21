@@ -27,10 +27,10 @@ func (gra *GitRewriteAuthor) ConfigGet() {
 
 // ConfigSet sets user name and email to Git config
 func (gra *GitRewriteAuthor) ConfigSet() {
-	if err := gra.repo.Set("user.name", gra.fl.GitUsername); err != nil {
+	if err := gra.repo.Set("user.name", gra.cli.ConfigSet.Name); err != nil {
 		log.Fatal().Err(err).Msg("Cannot set user.name")
 	}
-	if err := gra.repo.Set("user.email", gra.fl.GitEmail); err != nil {
+	if err := gra.repo.Set("user.email", gra.cli.ConfigSet.Email); err != nil {
 		log.Fatal().Err(err).Msg("Cannot set user.email")
 	}
 }

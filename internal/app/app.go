@@ -7,15 +7,15 @@ import (
 
 // GitRewriteAuthor represents an active git-rewrite-author object
 type GitRewriteAuthor struct {
-	fl   model.Flags
+	cli  model.Cli
 	repo *git.Repo
 }
 
 // New creates new git-rewrite-author instance
-func New(fl model.Flags) (*GitRewriteAuthor, error) {
-	repo, err := git.Open(fl.Repo)
+func New(cli model.Cli) (*GitRewriteAuthor, error) {
+	repo, err := git.Open(cli.Repo)
 	return &GitRewriteAuthor{
-		fl:   fl,
+		cli:  cli,
 		repo: repo,
 	}, err
 }

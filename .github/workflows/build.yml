@@ -1,72 +1,71 @@
 name: build
 
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches:
       - 'master'
     tags:
-      - '*.*.*'
-    paths:
-      - '.github/workflows/build.yml'
-      - 'cmd/**'
-      - 'internal/**'
-      - '.goreleaser.yml'
-      - 'go.mod'
-      - 'go.sum'
+      - '*'
   pull_request:
-    branches:
-      - 'master'
-    paths:
-      - '.github/workflows/build.yml'
-      - 'cmd/**'
-      - 'internal/**'
-      - '.goreleaser.yml'
-      - 'go.mod'
-      - 'go.sum'
 
 jobs:
-  release:
+  validate:
     runs-on: ubuntu-latest
     steps:
       -
         name: Checkout
         uses: actions/checkout@v3
       -
-        name: Prepare
-        id: prepare
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Validate
+        uses: docker/bake-action@v2
+        with:
+          targets: validate
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Build artifacts
+        uses: docker/bake-action@v2
+        with:
+          targets: artifact-all
+      -
+        name: Move artifacts
         run: |
-          if [[ $GITHUB_REF == refs/tags/* ]]; then
-            echo ::set-output name=version::${GITHUB_REF#refs/tags/}
-          fi
+          mv ./dist/**/* ./dist/
       -
-        name: Set up Go
-        uses: actions/setup-go@v2
+        name: Upload artifacts
+        uses: actions/upload-artifact@v3
         with:
-          go-version: 1.13
-      -
-        name: Cache Go modules
-        uses: actions/cache@v2
-        with:
-          path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
-      -
-        name: GoReleaser
-        uses: goreleaser/goreleaser-action@v2
-        with:
-          version: latest
-          args: release --skip-publish --rm-dist
+          name: git-rewrite-author
+          path: ./dist/*
+          if-no-files-found: error
       -
         name: GitHub Release
         uses: softprops/action-gh-release@v1
-        if: success() && startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/tags/')
         with:
           draft: true
           files: |
-            dist/checksums.txt
             dist/*.tar.gz
             dist/*.zip
-          name: ${{ steps.prepare.outputs.tag_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"html/template"
-	"io/ioutil"
+	"os"
 
 	"github.com/crazy-max/git-rewrite-author/internal/utl"
 	"github.com/rs/zerolog/log"
@@ -34,7 +34,7 @@ func (gra *GitRewriteAuthor) RewriteOne() {
 
 // RewriteList rewrites a list of authors/committers in Git history
 func (gra *GitRewriteAuthor) RewriteList() {
-	authorsFile, err := ioutil.ReadFile(gra.cli.RewriteList.File)
+	authorsFile, err := os.ReadFile(gra.cli.RewriteList.File)
 	if err != nil {
 		log.Fatal().Err(err).Msg("Cannot read authors JSON file")
 	}

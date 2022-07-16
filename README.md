@@ -24,9 +24,10 @@ ___
 
 ## Requirements
 
-You must have [Git](https://git-scm.com/) installed on your system and create a fresh, bare clone of your repository :
+You must have [Git](https://git-scm.com/) installed on your system and create a
+fresh, bare clone of your repository:
 
-```
+```console
 $ cd /tmp
 $ git clone --bare https://github.com/user/repo.git
 $ cd /tmp/repo.git
@@ -34,11 +35,14 @@ $ cd /tmp/repo.git
 
 ## Download
 
-You can download the application matching your platform on the [**releases page**](https://github.com/crazy-max/git-rewrite-author/releases/latest).
+You can download the application matching your platform on the
+[**releases page**](https://github.com/crazy-max/git-rewrite-author/releases/latest).
 
 ## Installation
 
-Place the executable in your Git repository. It is best to place it in your `PATH` so that you can use it anywhere in your system and also use it with the Git syntax `git rewrite-author`.
+Place the executable in your Git repository. It is best to place it in your
+`PATH` so that you can use it anywhere in your system and also use it with the
+Git syntax `git rewrite-author`.
 
 ## Usage
 
@@ -65,9 +69,10 @@ Commands:
 Run "git-rewrite-author <command> --help" for more information on a command.
 ```
 
-You probably want to know the list of authors/committers for a repository before rewritting history:
+You probably want to know the list of authors/committers for a repository
+before rewritting history:
 
-```
+```console
 $ git-rewrite-author list --repo /tmp/repo.git
 ohcrap <ohcrap@bad.com>
 GitHub <noreply@github.com>
@@ -76,7 +81,7 @@ root <root@localhost>
 
 Then you can rewrite a single author/committer:
 
-```
+```console
 $ git-rewrite-author rewrite "ohcrap@bad.com" "John Smith <john.smith@domain.com>" --repo /tmp/repo.git
 
 Following authors/committers will be rewritten:
@@ -101,7 +106,7 @@ Ref 'refs/tags/0.19.70-12' was rewritten
 
 Or a list of authors/committers:
 
-```
+```console
 $ git-rewrite-author rewrite-list ../authors.json --repo /tmp/repo.git
 
 Following authors/committers will be rewritten:
@@ -144,7 +149,7 @@ Here the `authors.json` JSON file looks like this:
 
 Now confirm everything suits to you:
 
-```
+```console
 $ git-rewrite-author list --repo /tmp/repo.git
 Good Sir <goodsir@users.noreply.github.com>
 John Smith <john.smith@domain.com>
@@ -152,8 +157,24 @@ John Smith <john.smith@domain.com>
 
 Review the new Git history for errors and push the corrected history to Git:
 
+```console
+$ git push --force --all
 ```
-git push --force --all
+
+## Build
+
+```shell
+git clone https://github.com/crazy-max/git-rewrite-author.git git-rewrite-author
+cd git-rewrite-author
+
+# validate (lint, vendors)
+docker buildx bake validate
+
+# build binary in ./bin
+docker buildx bake
+
+# create artifacts for all supported platforms in ./dist
+docker buildx bake artifact-all
 ```
 
 ## Contributing

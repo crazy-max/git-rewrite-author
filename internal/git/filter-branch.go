@@ -15,8 +15,7 @@ func (r *Repo) FilterBranch(args ...string) (err error) {
 		path = r.WorkDir
 	}
 
-	cmdArgs := make([]string, 1)
-	cmdArgs[0] = "filter-branch"
+	cmdArgs := []string{"filter-branch"}
 	cmdArgs = append(cmdArgs, args...)
 
 	stdout, stderr := os.Stdout, new(bytes.Buffer)

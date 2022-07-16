@@ -1,6 +1,6 @@
 module github.com/crazy-max/git-rewrite-author
 
-go 1.13
+go 1.18
 
 require (
 	github.com/alecthomas/kong v0.2.18

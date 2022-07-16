@@ -87,14 +87,13 @@ func Open(path string) (repo *Repo, err error) {
 		path = parent
 	}
 
-	return nil, errors.New(fmt.Sprintf("Could not find a Git repository in %s or any of its parents!", basepath))
+	return nil, fmt.Errorf("could not find a Git repository in %s or any of its parents", basepath)
 }
 
 // Git is a helper for creating exec.Cmd types and arranging to capture
 // the output and erro streams of the command into bytes.Buffers
 func Git(cmd string, args ...string) (res *exec.Cmd, stdout, stderr *bytes.Buffer) {
-	cmdArgs := make([]string, 1)
-	cmdArgs[0] = cmd
+	cmdArgs := []string{cmd}
 	cmdArgs = append(cmdArgs, args...)
 	res = exec.Command(gitCmd, cmdArgs...)
 	stdout, stderr = new(bytes.Buffer), new(bytes.Buffer)

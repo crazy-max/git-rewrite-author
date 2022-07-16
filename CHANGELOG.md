@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.0 (2022/07/16)
+
+* Go 1.18 and add container dev workflow (#55)
+* Bump github.com/alecthomas/kong from 0.2.9 to 0.6.1 (#12 #13 #22 #25 #32 #37 #54)
+* Bump github.com/rs/zerolog from 1.18.0 to 1.27.0 (#9 #17 #26 #31 #35 #52)
+
 ## 1.3.0 (2020/05/21)
 
 * Avoid git filter-branch delay
